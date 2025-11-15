@@ -17,17 +17,9 @@ class _AnimationPageState extends State<AnimationPage> with TickerProviderStateM
   late AnimationController controller;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     controller=AnimationController(vsync:this ,duration: const Duration(seconds:1));
-    animation=Tween<double>(begin: 0,end: 300).animate(controller)
-    ..addListener(
-      (){
-        setState(() {
-          
-        });
-      }
-    );
+    animation=Tween<double>(begin: 0,end: 300).animate(controller);
     controller.forward();
 
   }
@@ -43,10 +35,13 @@ class _AnimationPageState extends State<AnimationPage> with TickerProviderStateM
       home: Scaffold(
         backgroundColor: Colors.black,
         body:Center(
-          child: Container(
-            height: animation.value,
-            width: animation.value,
-            color: Colors.blue,
+          child: AnimatedBuilder(
+            builder:,
+            child: Container(
+              height: animation.value,
+              width: animation.value,
+              color: Colors.blue,
+            ),
           ),
         ),
       ),
