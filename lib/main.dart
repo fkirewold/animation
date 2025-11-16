@@ -36,12 +36,14 @@ class _AnimationPageState extends State<AnimationPage> with TickerProviderStateM
         backgroundColor: Colors.black,
         body:Center(
           child: AnimatedBuilder(
-            builder:,
-            child: Container(
+           animation: animation,
+           builder: (context,child){
+            return Container(
               height: animation.value,
               width: animation.value,
-              color: Colors.blue,
-            ),
+              color: Colors.red,
+            );
+           },
           ),
         ),
       ),
