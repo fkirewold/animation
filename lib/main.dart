@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(ScaleDemo());
+  runApp(MaterialApp(home: ScaleDemo()));
 }
 
 class ScaleDemo extends StatefulWidget {
@@ -22,7 +22,8 @@ class ScaleDemoState extends State<ScaleDemo>
       duration: const Duration(seconds: 1),
       vsync: this,
     );
-    _animation = Tween<double>(begin: 0.5, end: 1.5).animate(_controller);
+    _animation = Tween<double>(begin: 0.5, end: 1.5)
+        .animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
   }
 
   @override
@@ -38,15 +39,23 @@ class ScaleDemoState extends State<ScaleDemo>
               child: child,
             );
           },
-          child: ElevatedButton(
-            onPressed: () {
+          child: GestureDetector(
+            onTap: () {
               if (_controller.status == AnimationStatus.completed) {
                 _controller.reverse();
               } else {
                 _controller.forward();
               }
             },
-            child: const Text('Animate'),
+            child: CircleAvatar(
+              radius: 20,
+              backgroundColor: Colors.blue,
+              child: Icon(
+                _controller.status == AnimationStatus.completed
+                    ? Icons.pause
+                    : Icons.play_arrow,
+              ),
+            ),
           ),
         ),
       ),
