@@ -1,52 +1,61 @@
 import 'package:flutter/material.dart';
 
-void main()
-{
-  runApp(AnimationPage());
+void main() {
+  runApp(ScaleDemo());
 }
 
-class AnimationPage extends StatefulWidget {
-  const AnimationPage ({super.key});
-
+class ScaleDemo extends StatefulWidget {
+  const ScaleDemo({super.key});
   @override
-  State<AnimationPage> createState() => _AnimationPageState();
+  ScaleDemoState createState() => ScaleDemoState();
 }
 
-class _AnimationPageState extends State<AnimationPage> with TickerProviderStateMixin {
-  late Animation<double> animation;
-  late AnimationController controller;
+class ScaleDemoState extends State<ScaleDemo>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _controller;
+  late final Animation<double> _animation;
+
   @override
   void initState() {
     super.initState();
-    controller=AnimationController(vsync:this ,duration: const Duration(seconds:1));
-    animation=Tween<double>(begin: 0,end: 300).animate(controller);
-    controller.forward();
-
+    _controller = AnimationController(
+      duration: const Duration(seconds: 1),
+      vsync: this,
+    );
+    _animation = Tween<double>(begin: 0.5, end: 1.5).animate(_controller);
   }
 
-@override
-  void dispose() {
-   super.dispose();
-   controller.dispose();
-  }
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        backgroundColor: Colors.black,
-        body:Center(
-          child: AnimatedBuilder(
-           animation: animation,
-           builder: (context,child){
-            return Container(
-              height: animation.value,
-              width: animation.value,
-              color: Colors.red,
+    return Scaffold(
+      appBar: AppBar(title: const Text('Scale Animation')),
+      body: Center(
+        child: AnimatedBuilder(
+          animation: _animation,
+          builder: (context, child) {
+            return Transform.scale(
+              scale: _animation.value,
+              child: child,
             );
-           },
+          },
+          child: ElevatedButton(
+            onPressed: () {
+              if (_controller.status == AnimationStatus.completed) {
+                _controller.reverse();
+              } else {
+                _controller.forward();
+              }
+            },
+            child: const Text('Animate'),
           ),
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 }
