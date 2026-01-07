@@ -1,4 +1,4 @@
 class ShoeModle{
   final String name;
-  const ShoeModle({required this.name})
+  const ShoeModle({required this.name});
 }
